@@ -1,10 +1,12 @@
 <template>
-$END$
+  <video>
+
+  </video>
 </template>
 
 <script>
 export default {
-name: "videoUploadSuccess"
+  name: "videoUploadSuccess"
 }
 </script>
 

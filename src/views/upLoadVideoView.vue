@@ -1,10 +1,12 @@
 <template>
-$END$
+  <div>
+
+  </div>
 </template>
 
 <script>
 export default {
-name: "upLoadVideoView"
+  name: "upLoadVideoView"
 }
 </script>
 
