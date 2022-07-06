@@ -14,6 +14,8 @@ import videoFrame from "@/components/videoFrame";
 import mainMyTougao from "@/components/personalComponents/mainComponents/mainMyTougao";
 import shoucangFrame from "@/components/personalComponents/mainComponents/shoucangFrame";
 import register from "@/components/register";
+import adminView from "@/views/adminView";
+import adminVanGrid from "@/components/adminComponents/adminVanGrid";
 
 Vue.use(VueRouter)
 //获取原型对象上的push函数
@@ -32,12 +34,18 @@ const routes = [
 
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    path: '/adminManagement',
+    redirect: '/adminManagement/navigation',
+    component: adminView,
+    meta: {
+      isAdmin: true
+    },
+    children: [
+      {
+        path: 'navigation',
+        component: adminVanGrid
+      }
+    ]
   },
   {
     path: '/register',

@@ -196,11 +196,11 @@ export default {
 
 <style lang="less" scoped>
  .video-msg-set{
-   min-height: 500px;
+   min-height: 400px;
    background-color: #fcfcfc;
    .video-msg{
      padding-left: 16px;
-     width: 100%;
+     width: 90%;
      vertical-align: middle;
      font-size: 14px;color: #4b4b4b;
    }

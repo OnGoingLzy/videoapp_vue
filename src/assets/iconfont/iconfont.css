@@ -1,0 +1,54 @@
+@font-face {
+  font-family: "iconfont"; /* Project id  */
+  src: url('iconfont.ttf?t=1657086309409') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+/*添加更多图标*/
+.van-icon {
+  position: relative;
+  font-family: "iconfont","vant-icon" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.van-icon-shenhe:before {
+  content: "\e69e";
+}
+
+.van-icon-peizhiguanli:before {
+  content: "\e63f";
+}
+
+.van-icon-fenlei:before {
+  content: "\e654";
+}
+
+.van-icon-guanliyuan:before {
+  content: "\e62a";
+}
+
+.van-icon-peizhi:before {
+  content: "\e60f";
+}
+
+.van-icon-24gl-tags2:before {
+  content: "\e87c";
+}
+
+.van-icon-24gf-tags:before {
+  content: "\e885";
+}
+
+.van-icon-guanliyuan1:before {
+  content: "\e52d";
+}
+

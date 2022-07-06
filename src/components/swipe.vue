@@ -5,18 +5,18 @@
         <img v-lazy="image" />
       </van-swipe-item>
     </van-swipe>
-<!--    三级嵌套<hello-world></hello-world>-->
+
   </div>
 </template>
 
 <script>
 
-import HelloWorld from "@/components/HelloWorld";
+
 
 export default {
   name: "swipe",
   components:{
-      HelloWorld
+
   },
   data() {
     return {

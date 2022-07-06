@@ -17,8 +17,16 @@
         <div style="padding-top: 10px">
           <span class="pmsg-box-name-span">{{userMsg.cname}}</span>
         </div>
-
+          <van-image
+              width="20"
+              height="20"
+              :src="require('../../../assets/管理员.png')"
+              style="padding-top: 10px"
+              v-if="ctype==='3'"
+          />
       </van-col>
+
+
       <van-col span="8" class="pmsg-edit-box">
         <div >
           _____________
@@ -46,7 +54,8 @@ export default {
       cAvatar: 'default.png',
       cid: 0,
       cname: '请先登录',
-      userMsg:[]
+      userMsg:[],
+      ctype: sessionStorage.getItem('ctype'),
     }
   },
   methods:{
@@ -87,6 +96,7 @@ export default {
       padding-right: 15px;
     }
     .pmsg-box-name{
+      width: 44%;
       height: 100%;
       display: table-cell;
       /*垂直居中 */

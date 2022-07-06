@@ -34,6 +34,7 @@
   import HomeView from "@/views/HomeView";
   import footer_ from "@/components/footer_";
   import '@vant/touch-emulator';//组件只监听了移动端的 touch 事件，没有监听桌面端的 mouse 事件。使用他适配
+  import './assets/iconfont/iconfont.css'
   export default {
     //该provide里的reload用于子组件调用父组件中的reload函数刷新key值达到刷新组件的目的
     provide () {
@@ -63,6 +64,12 @@
         this.footerkey = 5
         this.$nextTick(function(){
           this.footerkey = 4
+        })
+      },
+      headerReload(){
+        this.headerkey = 1
+        this.$nextTick(function(){
+          this.headerkey = 5
         })
       },
       reload(){//key改变时会刷新组件

@@ -7,14 +7,12 @@
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
 import swipe from "@/components/swipe";
 import homeVideo from "@/components/homeVideo";
 
 export default {
   name: 'HomeView',
   components: {
-    HelloWorld,
     swipe,
     homeVideo,
   },
