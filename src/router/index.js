@@ -16,6 +16,7 @@ import shoucangFrame from "@/components/personalComponents/mainComponents/shouca
 import register from "@/components/register";
 import adminView from "@/views/adminView";
 import adminVanGrid from "@/components/adminComponents/adminVanGrid";
+import adminVideoAudit from "@/components/adminComponents/adminVideoAudit";
 
 Vue.use(VueRouter)
 //获取原型对象上的push函数
@@ -44,6 +45,10 @@ const routes = [
       {
         path: 'navigation',
         component: adminVanGrid
+      },
+      {
+        path: 'videoAudit',
+        component: adminVideoAudit
       }
     ]
   },
