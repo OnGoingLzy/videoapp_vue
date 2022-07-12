@@ -20,7 +20,7 @@
             <span style="line-height: 40px;color: #8470FF" v-if="jianjie">简介</span>
           </div>
         </van-col>
-        <van-col span="6" @click="jianjie=false">
+        <van-col span="6" @click="toComment">
           <div>
             <span style="line-height: 40px" v-if="jianjie" >评论</span>
             <span style="line-height: 40px;color: #8470FF" v-if="!jianjie">评论</span>
@@ -113,6 +113,24 @@
 
 
       <div class="pinglun" v-if="!jianjie">
+        <div>
+          <div style="display: inline-block;padding: 10px">
+            <span>热门评论</span>
+          </div>
+          <div style="display: inline-block;float: right;padding: 10px">
+           <span>按热度</span>
+          </div>
+        </div>
+
+<!--        <div class="comment-box" v-for="(comment,index) of commentlist" :key="index" >-->
+<!--          <van-image :src="'http://localhost:9000/avatar/'+usermsg.avatarName" class="comment-box-avatar"></van-image>-->
+<!--        </div>-->
+        <div v-for="(comment,index) of commentlist">
+          <comment-component v-bind:comment="comment" :key="index" v-if="comment.tocid===null"></comment-component>
+          <hr v-if="comment.tocid===null">
+        </div>
+
+
 
       </div>
     </van-popup>
@@ -123,11 +141,13 @@
 <script>
 import {Toast} from "vant";
 import mainAddFolder from "@/components/personalComponents/mainComponents/mainAddFolder";
+import commentComponent from "@/components/commentComponent";
 
 export default {
   inject:['setFVisible','footerReload'],
   components:{
-    mainAddFolder
+    mainAddFolder,
+    commentComponent,
   },
   name: "videoFrame",
   data(){
@@ -144,6 +164,8 @@ export default {
       shoucangState: false,
       showShare: false,
       folderlist:[],
+      commentlist:{},
+      usermsg:{},
       options: [
         { name: '微信', icon: 'wechat' },
         { name: '复制链接', icon: 'link' },
@@ -154,6 +176,21 @@ export default {
     toast(){//再次点击收藏提示
       Toast("请前往个人中心管理收藏")
     },
+    async toComment() {
+      this.jianjie = false
+      let formData = new FormData
+      formData.append("videoid",this.video.videoid)
+      await this.$http.post("getVideoComment", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      }).then(res=>{
+        this.commentlist = res.data
+      }).catch((error)=>{
+        Toast("服务器请求失败")
+      })
+    },
+
     async shoucangVideo() {
       let formData = new FormData
       formData.append("folderid", this.chooseFolder)
@@ -312,6 +349,18 @@ export default {
   }
   .jianjie-videomsg{
     padding: 10px;
+  }
+.pinglun{
+
+}
+.comment-box{
+  width: 364px;
+  min-height: 150px;
+  padding-left: 50px;
+  padding-top: 15px;
+  .comment-box-avatar{
 
   }
+}
+
 </style>

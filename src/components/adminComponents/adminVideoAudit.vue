@@ -86,7 +86,7 @@
 
 <script>
 import async from "async";
-import {Toast} from "vant";
+import {Dialog, Toast} from "vant";
 
 export default {
   name: "adminVideoAudit",
@@ -102,10 +102,55 @@ export default {
     }
   },
   methods:{
-    async passAudit(videoid) {
+    passAudit(videoid) {
+      Dialog.confirm({
+        title: '确认',
+        message: '是否通过审核?',
+        confirmButtonColor: "#5470ff"
+      }).then(() => {
+            this.surePass(videoid)
+          })
+          .catch(() => {
+            // on cancel
+          });
+
+    },
+    async surePass(videoid) {
       let formData = new FormData
-      formData.append("videoid")
-      await this.$http.post("passVideoAudit", formData)
+      formData.append("videoid",videoid)
+      await this.$http.post("passVideoAudit", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        },
+      }).then(res => {
+        //如果后台修改数据库成功，则删除videolist中已经审核通过的video
+        if (res.data === true) {
+          this.videolist.some((video, i) => {
+            if (video.videoid === videoid) {
+              this.videolist.splice(i, 1)
+              //在数组的some方法中，如果return true，就会立即终止这个数组的后续循环
+              return true
+            }
+          })
+        }
+      }).catch((error) =>{
+        Toast("服务器请求失败")
+        // if (error.response) {
+        //   // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
+        //   console.log(error.response.data);
+        //   console.log(error.response.status);
+        //   console.log(error.response.headers);
+        // } else if (error.request) {
+        //   // 请求已经成功发起，但没有收到响应
+        //   // `error.request` 在浏览器中是 XMLHttpRequest 的实例，
+        //   // 而在node.js中是 http.ClientRequest 的实例
+        //   console.log(error.request);
+        // } else {
+        //   // 发送请求时出了点问题
+        //   console.log('Error', error.message);
+        // }
+        // console.log(error.config);
+      })
     },
     closeRunVideo(){
       this.showvideoplay=false
