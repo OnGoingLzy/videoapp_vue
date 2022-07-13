@@ -23,7 +23,7 @@
     </van-list>
 
     <van-popup v-model="view" @close="view = false" :style="{height: '50%',width:'80%',borderRadius:'5px'}">
-      <van-icon name="shenhe" size="50px" style="left: 140px;padding: 8px" color="#5470ff"></van-icon>
+      <van-icon name="shenhe" size="50px" style="left: 42%;padding: 8px" color="#5470ff"></van-icon>
       <div class="img-box">
         <div class="img-box-text">
           <span style="font-size: 14px;color: #4b4b4b;">视频封面</span>
@@ -81,6 +81,8 @@
       </van-dialog>
 
     </van-popup>
+
+
   </div>
 </template>
 
@@ -194,12 +196,14 @@ export default {
     }
     .video-audit-msg-box{
       display: inline-block;
-      width: 50%;
+      width: 45%;
       height: 80px;
       padding-left: 10px;
       padding-right: 10px;
     }
     .video-audit-button{
+      width: 11%;
+
       display: inline-block;
       top: 24px;
       float: right;

@@ -95,14 +95,16 @@ export default {
   }
   .all-video-box{
     text-align: center;
+    padding-left: 5px;
+    padding-right: 5px;
   }
   .video-box {
-    width: 180px;
-    height: 160px;
+    width: 46%;
+    height: 36%;
     //border: 1px solid #8470FF;
     box-shadow: 0 1px 1px darkgrey;
     background-color: #fcfcfc;
-    margin: 7.5px;
+    margin: 5px;
     border-radius: 8px;
     display: inline-block;
 

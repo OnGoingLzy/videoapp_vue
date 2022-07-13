@@ -69,10 +69,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "src/assets/CSS/global";
+//@import "src/assets/CSS/global";
 .comment-box{
-  width: 364px;
-  min-height: 150px;
   padding-left: 50px;
   padding-top: 15px;
   .comment-box-avatar{

@@ -259,7 +259,7 @@ export default {
 
 <style lang="less" scoped>
   .all-video-box{
-    min-height: 350px;
+    min-height: 300px;
     ///*垂直居中 */
     //vertical-align: middle;
     /*水平居中*/
@@ -275,8 +275,8 @@ export default {
   }
   .video-box{
     position:relative;
-    width: 190px;
-    height: 150px;
+    width: 47%;
+    height: 36%;
     //border: 1px solid #8470FF;
     box-shadow: 0 1px 1px darkgrey;
     background-color: #fcfcfc;

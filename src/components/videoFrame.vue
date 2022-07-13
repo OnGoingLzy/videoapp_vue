@@ -125,11 +125,17 @@
 <!--        <div class="comment-box" v-for="(comment,index) of commentlist" :key="index" >-->
 <!--          <van-image :src="'http://localhost:9000/avatar/'+usermsg.avatarName" class="comment-box-avatar"></van-image>-->
 <!--        </div>-->
-        <div v-for="(comment,index) of commentlist">
+        <div v-for="(comment,index) of commentlist" >
           <comment-component v-bind:comment="comment" :key="index" v-if="comment.tocid===null"></comment-component>
           <hr v-if="comment.tocid===null">
         </div>
+<!--        评论一些下-->
 
+        <div class="input-Comment">
+          <input v-model="sendComment" class="input-Comment-box" type="text" placeholder="输入一条友善的评论">
+          <span  style="color: #d9d9d9;padding-left: 12px" v-if="sendComment===''">发布</span>
+          <span  style="color: #8470FF;padding-left: 12px" v-if="sendComment!==''" @click="submitComment">发布</span>
+        </div>
 
 
       </div>
@@ -152,6 +158,8 @@ export default {
   name: "videoFrame",
   data(){
     return {
+      sendComment:'',
+      tocid:null,
       chooseFolder:'',
       jianjie: true,
       key: 1,
@@ -173,6 +181,25 @@ export default {
     }
   },
   methods:{
+    async submitComment() {
+      if(sessionStorage.getItem("cid")===null){
+        Toast("请登录")
+        return
+      }
+      let formData = new FormData
+      formData.append("videoid",this.video.videoid)
+      formData.append("cid",sessionStorage.getItem("cid"))
+      formData.append("content",this.sendComment)
+      formData.append("tocid",this.tocid)
+      await this.$http.post("submitComment", formData).then(res=>{
+        if(res.data===true) {
+          Toast("评论成功")
+          this.toComment()
+        }
+      }).catch((error)=>{
+        Toast("服务器开小差了")
+      })
+    },
     toast(){//再次点击收藏提示
       Toast("请前往个人中心管理收藏")
     },
@@ -362,5 +389,17 @@ export default {
 
   }
 }
-
+.input-Comment{
+  width: 100%;
+  position: fixed;bottom: 0;
+  background: #fcfcfc;
+  .input-Comment-box{
+    background: rgba(224,224,224,0.76);
+    border-radius: 8px;
+    margin: 8px;
+    width: 320px;
+    height: 30px;
+    border: none;
+  }
+}
 </style>
