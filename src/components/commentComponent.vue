@@ -14,9 +14,9 @@
         <span style="font-weight: bolder">{{comment.content}}</span>
       </div>
       <div class="comment-box-root-statusbar">
-          <van-icon name="good-job-o" size="20px" style="display: inline-block"/>
+          <van-icon name="good-job-o" size="20px" style="display: inline-block;"/>
           <p style="margin: 0;display: inline-block">{{comment.belikecounts}}</p>
-
+        <van-icon name="chat-o" size="20px" style="margin-left:10px;display: inline-block" @click="replyComment(commenter.cid,commenter.cname)"/>
       </div>
 
 
@@ -35,6 +35,7 @@ import {Toast} from "vant";
 
 export default {
   name: "commentComponent",
+  inject:["replyComment"],
   props:["comment"],
   data(){
     return{

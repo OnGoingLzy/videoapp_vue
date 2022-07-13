@@ -90,7 +90,7 @@
           :options="options"
           @select="onSelect"
       />
-      <van-popup v-model="showShoucang" position="bottom" :style="{ height: '25%' }" style="background-color: #F2F3F5">
+      <van-popup v-model="showShoucang" position="bottom" :style="{ height: '25%' }" style="background-color: #F2F3F5" ref="popupbox">
         <div style="width: 100%;background: #fcfcfc;">
           <van-icon name="plus" size="20px" style="padding: 5px;left: 376px" @click="toAddFolder"/>
         </div>
@@ -125,16 +125,18 @@
 <!--        <div class="comment-box" v-for="(comment,index) of commentlist" :key="index" >-->
 <!--          <van-image :src="'http://localhost:9000/avatar/'+usermsg.avatarName" class="comment-box-avatar"></van-image>-->
 <!--        </div>-->
-        <div v-for="(comment,index) of commentlist" >
+        <div v-for="(comment,index) of commentlist" v-if="commentkey">
           <comment-component v-bind:comment="comment" :key="index" v-if="comment.tocid===null"></comment-component>
           <hr v-if="comment.tocid===null">
         </div>
 <!--        评论一些下-->
 
         <div class="input-Comment">
-          <input v-model="sendComment" class="input-Comment-box" type="text" placeholder="输入一条友善的评论">
-          <span  style="color: #d9d9d9;padding-left: 12px" v-if="sendComment===''">发布</span>
-          <span  style="color: #8470FF;padding-left: 12px" v-if="sendComment!==''" @click="submitComment">发布</span>
+          <input v-model="sendComment" class="input-Comment-box" type="text" :placeholder="placeholder" >
+          <span  style="color: #d9d9d9;padding-left: 8px" v-if="sendComment===''&&tocid===null">发布</span>
+          <span  style="color: #8470FF;padding-left: 8px" v-if="sendComment!==''&&tocid===null" @click="submitComment">发布</span>
+          <span  style="color: #d9d9d9;padding-left: 8px" v-if="sendComment===''&&tocid!==null">回复</span>
+          <span  style="color: #8470FF;padding-left: 8px" v-if="sendComment!==''&&tocid!==null" @click="submitComment">回复</span>
         </div>
 
 
@@ -151,13 +153,21 @@ import commentComponent from "@/components/commentComponent";
 
 export default {
   inject:['setFVisible','footerReload'],
+  provide(){
+    return{
+      replyComment: this.replyComment
+    }
+  },
   components:{
     mainAddFolder,
     commentComponent,
   },
   name: "videoFrame",
+
   data(){
     return {
+      placeholder:"输入一条友善的评论",
+      commentkey:true,
       sendComment:'',
       tocid:null,
       chooseFolder:'',
@@ -180,7 +190,25 @@ export default {
       ],
     }
   },
+  created() {
+    // //添加监听事件，当点击输入框以外的地方清除回复的目标
+    // document.addEventListener('click',(e) =>{
+    //   if(this.$refs.popupbox){
+    //     let isclick = this.$refs.popupbox.contains(e.target)
+    //     if(isclick){
+    //       this.placeholder="输入一条友善的评论"
+    //       this.tocid = null
+    //     }
+    //   }
+    // } )
+  },
   methods:{
+    replyComment(tocid,tocname){
+      this.tocid = tocid
+      this.placeholder = "回复@"+tocname+":"
+
+
+    },
     async submitComment() {
       if(sessionStorage.getItem("cid")===null){
         Toast("请登录")
@@ -194,6 +222,14 @@ export default {
       await this.$http.post("submitComment", formData).then(res=>{
         if(res.data===true) {
           Toast("评论成功")
+          //回复成功后清除当前回复的对象
+          this.sendComment=''
+          this.tocid = null
+          this.placeholder = "输入一条友善的评论"
+          this.commentkey = false
+          this.$nextTick(()=>{
+            this.commentkey = true
+          })
           this.toComment()
         }
       }).catch((error)=>{
@@ -379,15 +415,6 @@ export default {
   }
 .pinglun{
 
-}
-.comment-box{
-  width: 364px;
-  min-height: 150px;
-  padding-left: 50px;
-  padding-top: 15px;
-  .comment-box-avatar{
-
-  }
 }
 .input-Comment{
   width: 100%;
