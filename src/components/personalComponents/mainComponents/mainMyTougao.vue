@@ -81,7 +81,6 @@ export default {
   },
   async mounted() {
     await this.$http.post("getVideoWithAuthor",sessionStorage.getItem("cid")).then(res=>{
-      console.log("我的投稿"+res.data)
       this.videolist = res.data
     })
   }

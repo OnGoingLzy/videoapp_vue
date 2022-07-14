@@ -1,33 +1,40 @@
 <template>
-  <div class="comment-box" v-if="commenter!==null">
-    <van-image
-        class="comment-box-avatar"
-        width="40px"
-        height="40px"
-        round
-        :src="'http://localhost:9000/avatar/'+commenter.avatarName"
-    />
-    <div><span style="color: #8470FF">{{commenter.cname}}</span></div>
-    <div>{{comment.date}}</div>
-    <div class="comment-box-root">
-      <div class="comment-box-root-content">
-        <span style="font-weight: bolder">{{comment.content}}</span>
-      </div>
-      <div class="comment-box-root-statusbar">
+  <div style="overflow:hidden;">
+    <div class="comment-box-avatar">
+      <van-image
+          width="80%"
+          height="80%"
+          round
+          v-if="commenter!==null"
+          :src="'http://localhost:9000/avatar/'+commenter.avatarName"
+      />
+    </div>
+
+    <div class="comment-box" v-if="commenter!==null">
+      <div><span style="color: #8470FF">{{commenter.cname}}</span></div>
+      <div>{{comment.date}}</div>
+      <div class="comment-box-root">
+        <div class="comment-box-root-content">
+          <span style="font-weight: bolder">{{comment.content}}</span>
+        </div>
+        <div class="comment-box-root-statusbar">
           <van-icon name="good-job-o" size="20px" style="display: inline-block;"/>
           <p style="margin: 0;display: inline-block">{{comment.belikecounts}}</p>
-        <van-icon name="chat-o" size="20px" style="margin-left:10px;display: inline-block" @click="replyComment(commenter.cid,commenter.cname)"/>
-      </div>
+          <van-icon name="chat-o" size="20px" style="margin-left:10px;display: inline-block" @click="replyComment(commenter.cid,commenter.cname)"/>
+        </div>
 
 
-      <div class="comment-box-son" v-if="commentlist!==''">
-        <div v-for="(son,index) of commentlist" :key="index" >
-          <span style="color: #8470FF">用户{{son.cid}}</span>
-          <span>:{{son.content}}</span>
+        <div class="comment-box-son" v-if="commentlist!==''" style="overflow: auto">
+          <div v-for="(son,index) of commentlist" :key="index" >
+            <span style="color: #8470FF">用户{{son.cid}}</span>
+            <span>:{{son.content}}</span>
+          </div>
         </div>
       </div>
     </div>
+    <hr/>
   </div>
+
 </template>
 
 <script>
@@ -71,13 +78,19 @@ export default {
 
 <style lang="less" scoped>
 //@import "src/assets/CSS/global";
+.comment-box-avatar{
+  float: left;
+  margin-top: 15px;
+  width: 12%;
+  text-align: center;
+
+}
 .comment-box{
-  padding-left: 50px;
+  float: left;
   padding-top: 15px;
-  .comment-box-avatar{
-    margin-left: -45px;
-    position: absolute;
-  }
+  padding-bottom: 10px;
+  width: 82%;
+
   .comment-box-root{
     padding-top: 5px;
     width: 100%;
@@ -91,7 +104,7 @@ export default {
       border-radius: 5px;
       background: #dfe1e1;
       min-height: 50px;
-      max-height: 100px;
+      max-height: 80px;
     }
   }
 }

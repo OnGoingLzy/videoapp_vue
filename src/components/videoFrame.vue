@@ -1,6 +1,6 @@
 <template>
   <div >
-    <van-popup v-model="show" position="right" :style="{ height: '100%' ,width: '100%'}" @close="onClickLeft" class="videoFrame">
+    <van-popup v-model="show" position="right" :style="{ height: '100%' ,width: '100%'}" @close="onClickLeft" class="videoFrame" >
       <van-nav-bar
           title=""
           left-text=""
@@ -49,38 +49,68 @@
               <div><span style="font-size: 20px;font-weight: bold;">{{video.videoname}}</span></div>
               <br>
               <div style="width: 70%">
-                <span>{{video.description}}</span>
+                <span style="font-size: 14px;color: #afafaf">{{video.description}}</span>
                 <span v-if="video.description===''">该视频没有任何简介哦</span>
               </div>
             </van-col>
           </van-row>
-
-          <van-row style="padding-top: 10px;background: #fcfcfc">
+<!--          视频标签-->
+          <div class="img-box">
+            <div>
+              <van-tag round type="primary" v-for="(tag,index) of taglist" style="margin-right: 5px;" color="darkgrey">{{tag}}</van-tag>
+            </div>
+          </div>
+          <van-row style="padding-top: 10px;">
             <van-col span="8" class="icondiv" @click="likeit" v-if="!likeState">
-              <van-icon name="thumb-circle" size="40px"/>
+              <van-icon name="thumb-circle" size="30px"/>
               <p class="icondiv-p">{{video.likescount}}</p>
             </van-col>
             <van-col span="8" class="icondiv" @click="cancelLikeit" v-if="likeState" >
-              <van-icon name="thumb-circle" size="40px" color="#8470FF"/>
+              <van-icon name="thumb-circle" size="30px" color="#8470FF"/>
               <p class="icondiv-p">{{video.likescount}}</p>
             </van-col>
 
             <van-col span="8" class="icondiv" @click="showShoucangClick" v-if="!shoucangState">
-              <van-icon name="star" size="40px"/>
+              <van-icon name="star" size="30px"/>
               <p class="icondiv-p">点击收藏</p>
             </van-col>
             <van-col span="8" class="icondiv" v-if="shoucangState" @click="toast">
-              <van-icon name="star" size="40px" color="#8470FF"/>
+              <van-icon name="star" size="30px" color="#8470FF"/>
               <p class="icondiv-p">已收藏</p>
             </van-col>
 
 
             <van-col span="8" class="icondiv" @click="showShare=true">
-              <van-icon name="share" size="40px"/>
+              <van-icon name="share" size="30px"/>
             </van-col>
           </van-row>
 
+
+
         </div>
+        <hr>
+<!--        推荐视频-->
+        <div style="padding: 5px">
+          <div class="shoucang-video-box" v-for="(rvideo,index) of recommendVideoList" style="" v-if="video.videoid!==rvideo.videoid">
+            <div style="width: 93%" @click="toVideo(rvideo.videoid)">
+              <div class="shoucang-video-box-img">
+                <van-image height="80px" width="120px" radius="5px" fit="cover" :src="'http://localhost:9000/videoCover/'+rvideo.coverpath" >
+
+                </van-image>
+              </div>
+              <div class="shoucang-video-box-msg van-multi-ellipsis--l2" >
+                <div style="width: 100%;height: 40px">
+                  <span style="color: black">{{rvideo.videoname}}</span>
+                </div>
+                <div>
+                  <van-icon name="contact" size="16px"/>
+                  <span>{{rvideo.authorid}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
 
       </div>
 <!--      弹出区-->
@@ -112,7 +142,7 @@
       </van-popup>
 
 
-      <div class="pinglun" v-if="!jianjie">
+      <div class="pinglun" v-if="!jianjie" style="max-height: 550px;overflow: auto">
         <div>
           <div style="display: inline-block;padding: 10px">
             <span>热门评论</span>
@@ -125,23 +155,32 @@
 <!--        <div class="comment-box" v-for="(comment,index) of commentlist" :key="index" >-->
 <!--          <van-image :src="'http://localhost:9000/avatar/'+usermsg.avatarName" class="comment-box-avatar"></van-image>-->
 <!--        </div>-->
-        <div v-for="(comment,index) of commentlist" v-if="commentkey">
-          <comment-component v-bind:comment="comment" :key="index" v-if="comment.tocid===null"></comment-component>
-          <hr v-if="comment.tocid===null">
+        <div v-for="(comment,index) of commentlist" v-if="commentkey" style="overflow:hidden;">
+          <comment-component v-bind:comment="comment" :key="index" v-if="comment.tocid===null" ></comment-component>
         </div>
-<!--        评论一些下-->
+        <div style="height: 40px;width: 100%">
 
-        <div class="input-Comment">
-          <input v-model="sendComment" class="input-Comment-box" type="text" :placeholder="placeholder" >
-          <span  style="color: #d9d9d9;padding-left: 8px" v-if="sendComment===''&&tocid===null">发布</span>
-          <span  style="color: #8470FF;padding-left: 8px" v-if="sendComment!==''&&tocid===null" @click="submitComment">发布</span>
-          <span  style="color: #d9d9d9;padding-left: 8px" v-if="sendComment===''&&tocid!==null">回复</span>
-          <span  style="color: #8470FF;padding-left: 8px" v-if="sendComment!==''&&tocid!==null" @click="submitComment">回复</span>
         </div>
 
+<!--        <div class="input-Comment" v-if="!jianjie">-->
+<!--          <input v-model="sendComment" class="input-Comment-box" type="text" :placeholder="placeholder" >-->
+<!--          <span  style="color: #d9d9d9;padding-left: 8px" v-if="sendComment===''&&tocid===null">发布</span>-->
+<!--          <span  style="color: #8470FF;padding-left: 8px" v-if="sendComment!==''&&tocid===null" @click="submitComment">发布</span>-->
+<!--          <span  style="color: #d9d9d9;padding-left: 8px" v-if="sendComment===''&&tocid!==null">回复</span>-->
+<!--          <span  style="color: #8470FF;padding-left: 8px" v-if="sendComment!==''&&tocid!==null" @click="submitComment">回复</span>-->
+<!--        </div>-->
 
       </div>
+      <!--        评论一些下-->
+      <div class="input-Comment" v-if="!jianjie">
+        <input v-model="sendComment" class="input-Comment-box" type="text" :placeholder="placeholder" >
+        <span  style="color: #d9d9d9;padding-left: 8px" v-if="sendComment===''&&tocid===null">发布</span>
+        <span  style="color: #8470FF;padding-left: 8px" v-if="sendComment!==''&&tocid===null" @click="submitComment">发布</span>
+        <span  style="color: #d9d9d9;padding-left: 8px" v-if="sendComment===''&&tocid!==null">回复</span>
+        <span  style="color: #8470FF;padding-left: 8px" v-if="sendComment!==''&&tocid!==null" @click="submitComment">回复</span>
+      </div>
     </van-popup>
+
   </div>
 
 </template>
@@ -152,7 +191,7 @@ import mainAddFolder from "@/components/personalComponents/mainComponents/mainAd
 import commentComponent from "@/components/commentComponent";
 
 export default {
-  inject:['setFVisible','footerReload'],
+  inject:['setFVisible','footerReload','reload'],
   provide(){
     return{
       replyComment: this.replyComment
@@ -184,6 +223,8 @@ export default {
       folderlist:[],
       commentlist:{},
       usermsg:{},
+      recommendVideoList:{},
+      taglist:null,
       options: [
         { name: '微信', icon: 'wechat' },
         { name: '复制链接', icon: 'link' },
@@ -203,6 +244,13 @@ export default {
     // } )
   },
   methods:{
+    toVideo(videoid){
+      // this.videojsx.globaltoVideo(videoid)
+      sessionStorage.setItem("selectVideoId",videoid)
+      //带/从根路由开始，不带从当前路由开始
+      this.$router.push("/videoFrame")
+      this.reload()
+    },
     replyComment(tocid,tocname){
       this.tocid = tocid
       this.placeholder = "回复@"+tocname+":"
@@ -367,6 +415,25 @@ export default {
       console.log(res)
       this.folderlist = res
     },
+    async getRecommendVideo(){
+      let shuju= {
+        cpage: null,
+        category: this.video.category,
+        tag: this.video.tag.split(','),
+        searchSql: null,
+      }
+      let allcount
+      this.$http.post("/getAllCount2",shuju).then(async res => {
+        allcount = res.data
+        shuju.cpage = String(Math.floor(Math.random() * ((Number(allcount) / 4))) + 1);
+        const {data: videolist} = await this.$http.post("/getVideoWithCategoryAndTag", shuju)
+        console.log(videolist)
+        this.recommendVideoList = videolist
+      });
+
+
+
+    }
   },
   async beforeMount() {
     sessionStorage.setItem("active",'0')
@@ -374,6 +441,7 @@ export default {
     await this.$http.post("getVideo",videoid).then(async res => {
       if (res.data !== null) {
         this.video = res.data
+        this.taglist = this.video.tag.split(',')
         await this.$http.post("getMsgImg",res.data.authorid).then(res => {
           this.authorAvatar = res.data.avatarName
           this.author = res.data
@@ -382,6 +450,7 @@ export default {
     })
     await this.checkBeLike()
     await  this.checkBeCollected()
+    await this.getRecommendVideo()
   },
 
 }
@@ -393,7 +462,7 @@ export default {
   width: 100%;
 }
 .videoFrame{
-  background: #F2F3F5;
+  background: #f5f5f6;
   min-height: 600px;
 }
 
@@ -418,7 +487,8 @@ export default {
 }
 .input-Comment{
   width: 100%;
-  position: fixed;bottom: 0;
+  position: fixed;
+  bottom: 0;
   background: #fcfcfc;
   .input-Comment-box{
     background: rgba(224,224,224,0.76);
@@ -427,6 +497,18 @@ export default {
     width: 320px;
     height: 30px;
     border: none;
+  }
+}
+.img-box {
+  padding-left: 10px;
+  padding-right: 10px;
+  display: flex;
+  /*垂直居中 */
+
+  .img-box-text {
+    width: 98px;
+    vertical-align: middle;
+
   }
 }
 </style>

@@ -24,6 +24,9 @@ Vue.prototype.bus = Bus;
 //视频播放组件
 import VueCoreVideoPlayer from 'vue-core-video-player'
 Vue.use(VueCoreVideoPlayer)
+//使用公共js函数
+import videojs from "@/assets/commonjs/video";
+Vue.prototype.videojsx = videojs
 
 
 
@@ -32,5 +35,10 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
+
+window.addEventListener('storage', function (e) {
+  sessionStorage.setItem(e.key, e.oldValue)
+});
+
 
 

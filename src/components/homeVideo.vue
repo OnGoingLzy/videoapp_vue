@@ -206,7 +206,7 @@ export default {
       console.log("视频标签"+res2)
     },
     async changeCategoryOrTag(searchSql){
-      console.log("当前searchsql:"+searchSql)
+
       this.currentPage = 1;
       let shuju= {
         cpage: String(this.currentPage),
@@ -218,8 +218,7 @@ export default {
       const {data : allcount} = await  this.$http.post("/getAllCount2",shuju);
       this.videolist = videolist
       this.allVideoCount = allcount;
-      console.log("")
-      console.log("当前视频总数:"+this.allVideoCount)
+
       this.videokey = 660
       this.$nextTick(function(){
         this.videokey = 666

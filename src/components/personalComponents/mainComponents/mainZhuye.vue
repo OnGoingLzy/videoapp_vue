@@ -2,7 +2,7 @@
   <div style="min-height: 500px">
     <div class="guidelines-box">
       <div style=""><span>视频 </span></div>
-      <div style="margin-left: 70%" @click="toMyTougao">
+      <div style="margin-left: 65%" @click="toMyTougao">
         <span style="color: darkgrey">查看更多 </span>
         <van-icon name="arrow" color="#A9A9A9"/>
       </div>
@@ -23,7 +23,7 @@
 
     <div class="guidelines-box">
       <div style=""><span>收藏 </span></div>
-      <div style="margin-left: 70%" @click="toMyShoucang">
+      <div style="margin-left: 65%" @click="toMyShoucang">
         <span style="color: darkgrey">查看更多 </span>
         <van-icon name="arrow" color="#A9A9A9"/>
       </div>
@@ -124,6 +124,7 @@ export default {
   }
   .all-video-box{
     text-align: center;
+    padding: 5px;
   }
   .all-folder-box{
     text-align: center;
@@ -139,12 +140,12 @@ export default {
     }
   }
   .video-box {
-    width: 180px;
-    height: 160px;
+    width: 47%;
+    height: 37%;
     //border: 1px solid #8470FF;
     box-shadow: 0 1px 1px darkgrey;
     background-color: #fcfcfc;
-    margin: 7.5px;
+    margin: 5px;
     border-radius: 8px;
     display: inline-block;
     .video-box-p {

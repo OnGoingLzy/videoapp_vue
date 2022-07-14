@@ -2,7 +2,7 @@
   <div style="min-height: 500px">
 
     <div style="width: 100%;background: #fcfcfc;">
-      <van-icon name="plus" size="20px" style="padding: 5px;left: 376px" @click="toAddFolder"/>
+      <van-icon name="plus" size="20px" style="padding: 5px;left: 90%" @click="toAddFolder"/>
     </div>
     <van-collapse v-model="activeNames" accordion @change="changeFolder">
       <van-collapse-item :key="index" :title="folder.ffoldername" :name="folder.ffolderid" v-for="(folder,index) of folderList">
@@ -79,7 +79,6 @@ export default {
           "Content-Type": "multipart/form-data"
         }
       })
-      console.log(res)
       this.folderList = res
     },
     async changeFolder(Event) {
@@ -110,7 +109,6 @@ export default {
           "Content-Type": "multipart/form-data"
         }
       }).then(res=>{
-        console.log(res.data)
         if (res.data===true){
           Toast("取消成功")
           this.editVideoId=null
@@ -127,29 +125,29 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  .shoucang-video-box{
-    background: #F2F3F5;
-    width: 100%;
-    height: 80px;
-    padding: 5px;
-    display: flex;
-    .shoucang-video-box-img{
-      width: 120px;
-      height: 80px;
-      display: inline-block;
-    }
-    .shoucang-video-box-msg{
-      padding-left: 7px;
-      width: 58%;
-      height: 80px;
-      display: inline-block;
-    }
-    .shoucang-video-box-edit{
-      display: inline-block;
-      width: 20px;
-      padding-left: 6px;
-    }
-  }
+  //.shoucang-video-box{
+  //  background: #F2F3F5;
+  //  width: 100%;
+  //  height: 80px;
+  //  padding: 5px;
+  //  display: flex;
+  //  .shoucang-video-box-img{
+  //    width: 120px;
+  //    height: 80px;
+  //    display: inline-block;
+  //  }
+  //  .shoucang-video-box-msg{
+  //    padding-left: 7px;
+  //    width: 58%;
+  //    height: 80px;
+  //    display: inline-block;
+  //  }
+  //  .shoucang-video-box-edit{
+  //    display: inline-block;
+  //    width: 20px;
+  //    padding-left: 6px;
+  //  }
+  //}
   .icondiv{
     padding: 6px;
     display: table-cell;
