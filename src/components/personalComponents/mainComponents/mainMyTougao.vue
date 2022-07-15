@@ -23,7 +23,7 @@
     <div class="all-video-box">
       <div class="video-box" v-for="(video,index) of videolist" :key="index" @click="toVideoFrame(video)" v-if="video.status===2" >
         <div style="background: #e0e0e0;border-top-left-radius: 8px;border-top-right-radius: 8px;">
-          <van-image :src='"http://localhost:9000/videoCover/"+video.coverpath' width="100%" height="105px" fit="contain">
+          <van-image :src='"http://localhost:9000/videoCover/"+video.coverpath' width="100%" height="105px" fit="contain" radius="8px 8px 0px 0px">
           </van-image>
         </div>
 

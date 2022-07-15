@@ -90,12 +90,18 @@
         </div>
         <hr>
 <!--        推荐视频-->
-        <div style="padding: 5px">
+        <div style="padding: 10px;max-height: 270px;overflow: auto">
           <div class="shoucang-video-box" v-for="(rvideo,index) of recommendVideoList" style="" v-if="video.videoid!==rvideo.videoid">
             <div style="width: 93%" @click="toVideo(rvideo.videoid)">
               <div class="shoucang-video-box-img">
-                <van-image height="80px" width="120px" radius="5px" fit="cover" :src="'http://localhost:9000/videoCover/'+rvideo.coverpath" >
-
+                <van-image
+                    height="80px"
+                    width="120px"
+                    radius="5px"
+                    fit="fill"
+                    :src="'http://localhost:9000/videoCover/'+rvideo.coverpath"
+                    style="border: 1px solid darkgrey"
+                >
                 </van-image>
               </div>
               <div class="shoucang-video-box-msg van-multi-ellipsis--l2" >
@@ -111,35 +117,63 @@
           </div>
         </div>
 
+        <!--      弹出区-->
+        <van-share-sheet
+            v-model="showShare"
+            title="立即分享给好友"
+            :options="options"
+            @select="onSelect"
 
+        />
+        <van-popup v-model="showShoucang" position="bottom" :style="{ minheight: '15%' }" style="background-color: #F2F3F5" ref="popupbox">
+          <div style="width: 100%;background: #fcfcfc;">
+            <van-icon name="plus" size="20px" style="padding: 5px;left: 376px" @click="toAddFolder"/>
+          </div>
+
+          <van-radio-group v-model="chooseFolder" >
+            <van-cell-group>
+              <van-cell :title="folder.ffoldername" clickable @click="chooseFolder = folder.ffolderid" v-for="(folder,index) of folderlist">
+                <template #right-icon>
+                  <van-radio :name="folder.ffolderid" />
+                </template>
+              </van-cell>
+
+            </van-cell-group>
+          </van-radio-group>
+
+          <div style="width: 100%;height: 50px;text-align: center;margin-top: 5px;background-color: #fcfcfc" @click="shoucangVideo">
+            <span style="margin: 0;line-height: 50px">完成</span>
+          </div>
+        </van-popup>
       </div>
-<!--      弹出区-->
-      <van-share-sheet
-          v-model="showShare"
-          title="立即分享给好友"
-          :options="options"
-          @select="onSelect"
-      />
-      <van-popup v-model="showShoucang" position="bottom" :style="{ height: '25%' }" style="background-color: #F2F3F5" ref="popupbox">
-        <div style="width: 100%;background: #fcfcfc;">
-          <van-icon name="plus" size="20px" style="padding: 5px;left: 376px" @click="toAddFolder"/>
-        </div>
+<!--&lt;!&ndash;      弹出区&ndash;&gt;-->
+<!--      <van-share-sheet-->
+<!--          v-model="showShare"-->
+<!--          title="立即分享给好友"-->
+<!--          :options="options"-->
+<!--          @select="onSelect"-->
 
-        <van-radio-group v-model="chooseFolder" >
-          <van-cell-group>
-            <van-cell :title="folder.ffoldername" clickable @click="chooseFolder = folder.ffolderid" v-for="(folder,index) of folderlist">
-              <template #right-icon>
-                <van-radio :name="folder.ffolderid" />
-              </template>
-            </van-cell>
+<!--      />-->
+<!--      <van-popup v-model="showShoucang" position="bottom" :style="{ height: '25%' }" style="background-color: #F2F3F5" ref="popupbox">-->
+<!--        <div style="width: 100%;background: #fcfcfc;">-->
+<!--          <van-icon name="plus" size="20px" style="padding: 5px;left: 376px" @click="toAddFolder"/>-->
+<!--        </div>-->
 
-          </van-cell-group>
-        </van-radio-group>
+<!--        <van-radio-group v-model="chooseFolder" >-->
+<!--          <van-cell-group>-->
+<!--            <van-cell :title="folder.ffoldername" clickable @click="chooseFolder = folder.ffolderid" v-for="(folder,index) of folderlist">-->
+<!--              <template #right-icon>-->
+<!--                <van-radio :name="folder.ffolderid" />-->
+<!--              </template>-->
+<!--            </van-cell>-->
 
-        <div style="width: 100%;height: 50px;text-align: center;margin-top: 5px;background-color: #fcfcfc" @click="shoucangVideo">
-          <span style="margin: 0;line-height: 50px">完成</span>
-        </div>
-      </van-popup>
+<!--          </van-cell-group>-->
+<!--        </van-radio-group>-->
+
+<!--        <div style="width: 100%;height: 50px;text-align: center;margin-top: 5px;background-color: #fcfcfc" @click="shoucangVideo">-->
+<!--          <span style="margin: 0;line-height: 50px">完成</span>-->
+<!--        </div>-->
+<!--      </van-popup>-->
 
 
       <div class="pinglun" v-if="!jianjie" style="max-height: 550px;overflow: auto">
@@ -152,11 +186,10 @@
           </div>
         </div>
 
-<!--        <div class="comment-box" v-for="(comment,index) of commentlist" :key="index" >-->
-<!--          <van-image :src="'http://localhost:9000/avatar/'+usermsg.avatarName" class="comment-box-avatar"></van-image>-->
-<!--        </div>-->
+
         <div v-for="(comment,index) of commentlist" v-if="commentkey" style="overflow:hidden;">
           <comment-component v-bind:comment="comment" :key="index" v-if="comment.tocid===null" ></comment-component>
+          <hr v-if="comment.tocid===null">
         </div>
         <div style="height: 40px;width: 100%">
 
@@ -338,7 +371,6 @@ export default {
           "Content-Type": "multipart/form-data"
         }
       }).then(res=>{
-        console.log("检查是否收藏"+res.data)
         if(res.data===true){
           this.shoucangState=true
         }
@@ -353,7 +385,6 @@ export default {
           "Content-Type": "multipart/form-data"
         }
       }).then(res=>{
-        console.log("检查是否点赞"+res.data)
         if(res.data===true){
           this.likeState=true
         }
@@ -412,14 +443,14 @@ export default {
           "Content-Type": "multipart/form-data"
         }
       })
-      console.log(res)
       this.folderlist = res
     },
     async getRecommendVideo(){
       let shuju= {
         cpage: null,
         category: this.video.category,
-        tag: this.video.tag.split(','),
+        //tag: this.video.tag.split(','),
+        tag: ['默认'],
         searchSql: null,
       }
       let allcount
@@ -427,7 +458,6 @@ export default {
         allcount = res.data
         shuju.cpage = String(Math.floor(Math.random() * ((Number(allcount) / 4))) + 1);
         const {data: videolist} = await this.$http.post("/getVideoWithCategoryAndTag", shuju)
-        console.log(videolist)
         this.recommendVideoList = videolist
       });
 

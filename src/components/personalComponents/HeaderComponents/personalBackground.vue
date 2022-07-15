@@ -18,8 +18,10 @@ export default {
     }
   },
   mounted() {
-    if(sessionStorage.getItem('cbkg')!==null){
-      this.bkgImg = sessionStorage.getItem('cbkg')
+    if (sessionStorage.getItem('cid') !== null) {
+      this.$http.post("getMsgImg", sessionStorage.getItem('cid')).then(res => {
+        this.bkgImg = res.data.bkgName
+      })
     }
 
   }

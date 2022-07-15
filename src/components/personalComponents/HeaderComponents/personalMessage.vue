@@ -11,6 +11,8 @@
             width="60"
             height="60"
             :src='"http://localhost:9000/avatar/"+cAvatar'
+            @click="showEditAvatar=true"
+            style="border: 1px solid darkgrey"
         />
       </van-col>
       <van-col span="8" class="pmsg-box-name">
@@ -39,12 +41,12 @@
     <div class="introduction">
       <p style="margin: 0">{{userMsg.introduction}}</p>
     </div>
+
+
   </div>
 </template>
 
 <script>
-
-import bus from "@/bus";
 
 export default {
   inject: ['reload','setVisible','reloadBar'],
@@ -55,10 +57,11 @@ export default {
       cid: 0,
       cname: '请先登录',
       userMsg:[],
-      ctype: sessionStorage.getItem('ctype'),
+      ctype:sessionStorage.getItem("ctype"),
     }
   },
   methods:{
+
     iconClick(){
       this.setVisible(true)
       this.$router.push('/login')
@@ -67,21 +70,26 @@ export default {
       sessionStorage.setItem('personalActive','0')
       this.reloadBar()
       this.$router.push('editMsg')
-    }
+    },
+
   },
-  async mounted() {
+  mounted() {
     this.cid = Number(sessionStorage.getItem('cid'))  //一定要转换类型
     if (this.cid === 404) {
       this.cAvatar = "default.png"
-    } else this.cAvatar = sessionStorage.getItem("cAvatar")
+    }
 
     this.cname = sessionStorage.getItem('cname')
     if (this.cid === 404) {
       this.cname = "离线管理"
     }
-    await this.$http.post("getMsgImg", this.cid).then(res=>{
-      this.userMsg = res.data
-    })
+    if(this.cid!==0){
+      this.$http.post("getMsgImg", this.cid).then(res=>{
+        this.userMsg = res.data
+        this.cAvatar = res.data.avatarName
+
+      })
+    }
 
   }
 }

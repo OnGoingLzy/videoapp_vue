@@ -87,7 +87,6 @@ export default {
         const {data: res2} = await this.$http.post("/getMsgImg", String(res.cid));//不能使用int型
         if (res !== "") {
           sessionStorage.setItem('cAvatar', res2.avatarName)
-          sessionStorage.setItem('cbkg',res2.bkgName)
         } else {
           sessionStorage.setItem('cAvatar','default.png')
         }

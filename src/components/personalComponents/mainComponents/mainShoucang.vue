@@ -10,7 +10,7 @@
         <div class="shoucang-video-box" v-for="(video,index) of folderVideo" >
           <div style="width: 93%" @click="toVideo(video.videoid)">
             <div class="shoucang-video-box-img">
-              <van-image height="80px" width="120px" radius="5px" fit="cover" :src="'http://localhost:9000/videoCover/'+video.coverpath" >
+              <van-image height="80px" width="120px" radius="5px" fit="fill" :src="'http://localhost:9000/videoCover/'+video.coverpath" style="border: 1px solid darkgrey">
 
               </van-image>
             </div>
@@ -125,29 +125,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  //.shoucang-video-box{
-  //  background: #F2F3F5;
-  //  width: 100%;
-  //  height: 80px;
-  //  padding: 5px;
-  //  display: flex;
-  //  .shoucang-video-box-img{
-  //    width: 120px;
-  //    height: 80px;
-  //    display: inline-block;
-  //  }
-  //  .shoucang-video-box-msg{
-  //    padding-left: 7px;
-  //    width: 58%;
-  //    height: 80px;
-  //    display: inline-block;
-  //  }
-  //  .shoucang-video-box-edit{
-  //    display: inline-block;
-  //    width: 20px;
-  //    padding-left: 6px;
-  //  }
-  //}
+  .van-collapse-item__content{
+    padding: 11px 11px;
+  }
   .icondiv{
     padding: 6px;
     display: table-cell;

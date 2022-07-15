@@ -78,15 +78,15 @@
       </div>
 
       <div class="video-box" v-for="(video,index) of videolist" :key="index" @click="toVideoFrame(video)">
-        <div style="background: #e0e0e0;border-top-left-radius: 8px;border-top-right-radius: 8px;">
-          <van-image style="z-index: 1" :src='"http://localhost:9000/videoCover/"+video.coverpath' width="100%" height="105px" fit="contain">
+        <div style="background: #e0e0e0;border-top-left-radius: 8px;border-top-right-radius: 8px;height: 80%">
+          <van-image style="z-index: 1" radius="8px 8px 0px 0px" :src='"http://localhost:9000/videoCover/"+video.coverpath' width="100%" height="110px" fit="contain">
+            <div style="z-index:2;margin-top: -30px;height: 30px;background: linear-gradient(to bottom,rgba(255,255,255,0),rgba(0,0,0,0.62))">
+              <span style="color: #ffffff;display: flex;line-height: 35px;margin-left: 10px" v-text="Math.floor(Number(video.videoseconds)/60).toString().padStart(2, '0')+':'+(Number(video.videoseconds)%60).toString().padStart(2, '0')"></span>
+            </div>
           </van-image>
-          <div style="z-index:2;margin-top: -30px;height: 30px;background: linear-gradient(to bottom,rgba(255,255,255,0),rgba(0,0,0,0.62))">
-            <span style="color: #ffffff;display: flex;line-height: 30px;margin-left: 10px" v-text="Math.floor(Number(video.videoseconds)/60).toString().padStart(2, '0')+':'+(Number(video.videoseconds)%60).toString().padStart(2, '0')"></span>
-          </div>
         </div>
 
-        <div class="van-ellipsis" style="width: 100%;text-align: left">
+        <div class="van-ellipsis" style="width: 100%;text-align: left;height: 30px">
           <span class="video-box-p" >{{video.videoname}}</span>
         </div>
       </div>
@@ -273,7 +273,7 @@ export default {
     border-radius: 5px;
   }
   .video-box{
-    position:relative;
+    //position:relative;
     width: 47%;
     height: 36%;
     //border: 1px solid #8470FF;

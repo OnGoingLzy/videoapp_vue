@@ -19,6 +19,7 @@
             height="34"
             :src='"http://localhost:9000/avatar/"+cAvatar'
             @click="toPersonalSpace"
+            style="border: 1px solid darkgrey"
         />
       </van-col>
       <van-col span="4" class="icondiv">
@@ -42,7 +43,7 @@ import router from "@/router";
 import {List, Notify, Toast} from "vant";
 
 export default {
-  inject: ['reload'],
+  inject: ['reload','footerReload'],
   name: "header_",
   data(){
     return{
@@ -74,6 +75,8 @@ export default {
       })
     },
     toPersonalSpace() {
+      sessionStorage.setItem("active",'3')
+      this.footerReload()
       this.$emit('visibleEvent',false) //点击后传递false给app.vue隐藏header
       this.$router.push('/personalSpace')
     },
@@ -101,16 +104,15 @@ export default {
   },//挂载
   mounted() {
     console.log("挂载.....")
-    console.log("获取session的cid1前:"+this.cid)
     this.cid = Number(sessionStorage.getItem('cid'))
-    console.log("获取session的cid1后:"+this.cid)
+
     //获取消息和头像等
     console.log("header里的avatar1:" + this.cAvatar)
-    if(this.cid === 404){
-      this.cAvatar = "default.png"
-    }else this.cAvatar = sessionStorage.getItem("cAvatar")
-    console.log("header里的avatar2:" + this.cAvatar)
-    console.log("------------")
+    if (sessionStorage.getItem('cid') !== null) {
+      this.$http.post("getMsgImg", sessionStorage.getItem('cid')).then(res => {
+        this.cAvatar = res.data.avatarName
+      })
+    }
   }
 }
 </script>
