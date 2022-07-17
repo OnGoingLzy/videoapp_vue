@@ -182,14 +182,14 @@
             <span>热门评论</span>
           </div>
           <div style="display: inline-block;float: right;padding: 10px">
-           <span>按热度</span>
+           <span v-if="sortState==='按热度'" style="color: darkgrey" @click="changeSort('按日期')" v-text="sortState"></span>
+            <span v-if="sortState==='按日期'" style="color: darkgrey" @click="changeSort('按热度')" v-text="sortState"></span>
           </div>
         </div>
 
 
-        <div v-for="(comment,index) of commentlist" v-if="commentkey" style="overflow:hidden;">
-          <comment-component v-bind:comment="comment" :key="index" v-if="comment.tocid===null" ></comment-component>
-          <hr v-if="comment.tocid===null">
+        <div v-for="(comment,index) of commentlist" v-if="commentkey" style="overflow:hidden;box-shadow: 0 1px 1px darkgrey;">
+          <comment-component v-bind:comment="comment" :key="index" v-if="comment.tocommentid===null" ></comment-component>
         </div>
         <div style="height: 40px;width: 100%">
 
@@ -207,10 +207,11 @@
       <!--        评论一些下-->
       <div class="input-Comment" v-if="!jianjie">
         <input v-model="sendComment" class="input-Comment-box" type="text" :placeholder="placeholder" >
-        <span  style="color: #d9d9d9;padding-left: 8px" v-if="sendComment===''&&tocid===null">发布</span>
-        <span  style="color: #8470FF;padding-left: 8px" v-if="sendComment!==''&&tocid===null" @click="submitComment">发布</span>
-        <span  style="color: #d9d9d9;padding-left: 8px" v-if="sendComment===''&&tocid!==null">回复</span>
-        <span  style="color: #8470FF;padding-left: 8px" v-if="sendComment!==''&&tocid!==null" @click="submitComment">回复</span>
+        <van-icon style="vertical-align: middle" name="close" size="20px" @click="tocommentid=null;placeholder='输入一条友善的评论';sendComment=''"/>
+        <span  style="color: #d9d9d9;padding-left: 8px" v-if="sendComment===''&&tocommentid===null">发布</span>
+        <span  style="color: #8470FF;padding-left: 8px" v-if="sendComment!==''&&tocommentid===null" @click="submitComment">发布</span>
+        <span  style="color: #d9d9d9;padding-left: 8px" v-if="sendComment===''&&tocommentid!==null">回复</span>
+        <span  style="color: #8470FF;padding-left: 8px" v-if="sendComment!==''&&tocommentid!==null" @click="submitComment">回复</span>
       </div>
     </van-popup>
 
@@ -227,7 +228,8 @@ export default {
   inject:['setFVisible','footerReload','reload'],
   provide(){
     return{
-      replyComment: this.replyComment
+      replyComment: this.replyComment,
+      rootdelComment: this.delComment
     }
   },
   components:{
@@ -238,10 +240,11 @@ export default {
 
   data(){
     return {
+      sortState:"按热度",
       placeholder:"输入一条友善的评论",
       commentkey:true,
       sendComment:'',
-      tocid:null,
+      tocommentid:null,
       chooseFolder:'',
       jianjie: true,
       key: 1,
@@ -284,10 +287,40 @@ export default {
       this.$router.push("/videoFrame")
       this.reload()
     },
-    replyComment(tocid,tocname){
-      this.tocid = tocid
+    replyComment(tocommentid,tocname){
+      this.tocommentid = tocommentid
       this.placeholder = "回复@"+tocname+":"
+    },
+    delComment(commentid) {
+      this.commentlist.some((comment,i)=>{
+        if(comment.commentid===commentid){
+          this.commentlist.splice(i,1)
+          return true
+        }
+      })
+      this.commentkey = false
+      this.$nextTick(()=>{
+        this.commentkey = true
+      })
+    },
+    changeSort(sortState){
+      this.commentkey = false
+      this.$nextTick(()=>{
+        this.commentkey = true
+      })
+      if(sortState==='按热度'){
+        this.sortState = '按热度'
+        this.commentlist = this.commentlist.sort(function (a,b){
+          return b.belikecounts - a.belikecounts
 
+        })
+      }else {
+        this.sortState = '按日期'
+        this.commentlist = this.commentlist.sort(function (a,b){
+          //按时间排序需要处理下
+          return new Date(b.date).getTime() - new Date(a.date).getTime()
+        })
+      }
 
     },
     async submitComment() {
@@ -299,13 +332,14 @@ export default {
       formData.append("videoid",this.video.videoid)
       formData.append("cid",sessionStorage.getItem("cid"))
       formData.append("content",this.sendComment)
-      formData.append("tocid",this.tocid)
+      formData.append("tocommentid",this.tocommentid)
+      // console.log(this.tocommentid)
       await this.$http.post("submitComment", formData).then(res=>{
         if(res.data===true) {
           Toast("评论成功")
           //回复成功后清除当前回复的对象
           this.sendComment=''
-          this.tocid = null
+          this.tocommentid = null
           this.placeholder = "输入一条友善的评论"
           this.commentkey = false
           this.$nextTick(()=>{
@@ -329,7 +363,9 @@ export default {
           "Content-Type": "multipart/form-data"
         }
       }).then(res=>{
+        //点赞数排序
         this.commentlist = res.data
+        this.changeSort('按热度')
       }).catch((error)=>{
         Toast("服务器请求失败")
       })
@@ -521,10 +557,11 @@ export default {
   bottom: 0;
   background: #fcfcfc;
   .input-Comment-box{
+    display: inline-block;
     background: rgba(224,224,224,0.76);
     border-radius: 8px;
     margin: 8px;
-    width: 320px;
+    width: 70%;
     height: 30px;
     border: none;
   }

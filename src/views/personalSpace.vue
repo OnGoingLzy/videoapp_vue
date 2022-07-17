@@ -1,10 +1,9 @@
 <template>
   <div class="personalSpace">
-      <SpaceHeader :key="key"></SpaceHeader>
-
-        <router-view></router-view>
-
-
+    <keep-alive v-if="key===0">
+      <SpaceHeader ></SpaceHeader>
+    </keep-alive>
+      <router-view></router-view>
   </div>
 </template>
 
