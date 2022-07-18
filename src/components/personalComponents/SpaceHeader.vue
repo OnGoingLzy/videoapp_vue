@@ -12,7 +12,7 @@
 import personalBackground from "@/components/personalComponents/HeaderComponents/personalBackground";
 import personalBar from "@/components/personalComponents/HeaderComponents/personalBar";
 import personalMessage from "@/components/personalComponents/HeaderComponents/personalMessage";
-import PersonalSpace from "@/views/personalSpace";
+import PersonalSpace from "@/views/PersonalSpace";
 export default {
   name: "SpaceHeader",
   provide(){

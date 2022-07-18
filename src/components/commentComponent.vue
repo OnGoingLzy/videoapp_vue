@@ -112,8 +112,8 @@ export default {
 
     }
   },
-  async beforeMount() {
-    await this.$http.post("getMsgImg", this.comment.cid).then(res => {
+  async mounted() {
+    this.$http.post("getMsgImg", this.comment.cid).then(res => {
       this.commenter = res.data
     })
 

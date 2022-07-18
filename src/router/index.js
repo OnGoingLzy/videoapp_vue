@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import login from "@/components/login";
-import personalSpace from "@/views/personalSpace";
+import PersonalSpace from "@/views/PersonalSpace";
 import mainZhuye from "@/components/personalComponents/mainComponents/mainZhuye";
 import mainTougao from "@/components/personalComponents/mainComponents/Tougao";
 import mainShoucang from "@/components/personalComponents/mainComponents/mainShoucang";
@@ -12,9 +12,8 @@ import videoSetMsg from "@/components/personalComponents/mainComponents/TougaoCo
 import mainAddFolder from "@/components/personalComponents/mainComponents/mainAddFolder";
 import videoFrame from "@/components/videoFrame";
 import mainMyTougao from "@/components/personalComponents/mainComponents/mainMyTougao";
-import shoucangFrame from "@/components/personalComponents/mainComponents/shoucangFrame";
 import register from "@/components/register";
-import adminView from "@/views/adminView";
+import AdminView from "@/views/AdminView";
 import adminVanGrid from "@/components/adminComponents/adminVanGrid";
 import adminVideoAudit from "@/components/adminComponents/adminVideoAudit";
 
@@ -30,14 +29,16 @@ VueRouter.prototype.push = function push(location) {
 const routes = [
   {
     path: '/',
-    name: 'menu',
-    component: HomeView
+    component: HomeView,
+    meta: {
+
+    }
 
   },
   {
     path: '/adminManagement',
     redirect: '/adminManagement/navigation',
-    component: adminView,
+    component: AdminView,
     meta: {
       isAdmin: true
     },
@@ -101,20 +102,15 @@ const routes = [
   {
     path: '/personalSpace/',
     redirect:'/personalSpace/zhuye',
-    name: 'personalSpace',
     meta:{
-      islogin: true
+      islogin: true,
     },
-    component: personalSpace, //二级路由配置
+    component: PersonalSpace, //二级路由配置
     //注意:下面子路由中加不加‘/’ 的区别：当去到fe的时候加 ‘/'会在地址栏中显示 #/fe;不加 ‘/'的时候回在地址栏中显示#/position/fe
     children: [
       {
         path: 'zhuye',
         component: mainZhuye,
-        children: [{
-          path: 'shoucangFrame',
-          component: shoucangFrame
-        }],
         meta:{
           islogin: true
         },

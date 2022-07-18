@@ -1,9 +1,12 @@
 <template>
   <div class="personalSpace">
-    <keep-alive v-if="key===0">
-      <SpaceHeader ></SpaceHeader>
+    <keep-alive>
+      <SpaceHeader v-if="key===0"></SpaceHeader>
     </keep-alive>
-      <router-view></router-view>
+
+    <keep-alive>
+    <router-view v-if="key2===1"> </router-view>
+    </keep-alive>
   </div>
 </template>
 
@@ -12,7 +15,7 @@ import SpaceHeader from "@/components/personalComponents/SpaceHeader";
 
 export default {
   inject:['setVisible'],
-  name: "personalSpace",
+  name: "PersonalSpace",
   provide(){
     return{
       changeBar : this.changeBar
@@ -20,7 +23,8 @@ export default {
   },
   data(){
     return{
-      key: 0
+      key: 0,
+      key2:1
     }
   } ,
   methods:{

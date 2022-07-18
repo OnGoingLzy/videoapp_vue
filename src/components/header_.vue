@@ -8,11 +8,11 @@
                     input-align="center"
         />
       </van-col>
-      <van-col span="4" class="icondiv" v-if="cid === 0">
+      <van-col span="4" class="icondiv" v-if="cid === '0'">
         <div class="child" />
         <van-icon name="user-circle-o" size="34" @click="iconClick" />
       </van-col>
-      <van-col span="4" class="icondiv" v-if="cid !== 0">
+      <van-col span="4" class="icondiv" v-if="cid !== '0'">
         <van-image
             round
             width="34"
@@ -29,7 +29,7 @@
         </van-badge>
       </van-col>
 <!--     退出登录 logout-->
-      <van-col span="4" class="icondiv" v-if="cid !== 0">
+      <van-col span="4" class="icondiv" v-if="cid !== '0'">
           <div class="child" />
           <van-icon name="close" size="34" @click="logout"/>
       </van-col>
@@ -48,7 +48,7 @@ export default {
   data(){
     return{
       search: '',
-      cid: 0,
+      cid: '0',
       cAvatar: 'default.png',
       key: 0,
     }
@@ -104,7 +104,7 @@ export default {
   },//挂载
   mounted() {
     console.log("挂载.....")
-    this.cid = Number(sessionStorage.getItem('cid'))
+    this.cid = sessionStorage.getItem('cid')
 
     //获取消息和头像等
     console.log("header里的avatar1:" + this.cAvatar)
@@ -112,7 +112,10 @@ export default {
       this.$http.post("getMsgImg", sessionStorage.getItem('cid')).then(res => {
         this.cAvatar = res.data.avatarName
       })
-    }
+      // this.$http.post("getMsgImg", this.desjs.decryptDes(sessionStorage.getItem('cid'))).then(res => {
+      //   this.cAvatar = res.data.avatarName
+      // })
+    }else this.cid = '0'
   }
 }
 </script>

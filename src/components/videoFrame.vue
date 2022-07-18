@@ -28,7 +28,7 @@
         </van-col>
       </van-row>
 
-      <div class="jianjie" v-if="jianjie">
+      <div class="jianjie" v-show="jianjie">
         <div>
           <van-row>
             <van-col span="16" class="jianjie-author">
@@ -176,7 +176,7 @@
 <!--      </van-popup>-->
 
 
-      <div class="pinglun" v-if="!jianjie" style="max-height: 550px;overflow: auto">
+      <div class="pinglun" v-show="!jianjie" style="max-height: 550px;overflow: auto">
         <div>
           <div style="display: inline-block;padding: 10px">
             <span>热门评论</span>
@@ -188,8 +188,11 @@
         </div>
 
 
-        <div v-for="(comment,index) of commentlist" v-if="commentkey" style="overflow:hidden;box-shadow: 0 1px 1px darkgrey;">
-          <comment-component v-bind:comment="comment" :key="index" v-if="comment.tocommentid===null" ></comment-component>
+        <div v-for="(comment,index) of commentlist" v-show="commentkey" style="overflow:hidden;box-shadow: 0 1px 1px darkgrey;">
+          <keep-alive>
+            <comment-component v-bind:comment="comment" :key="index"  ></comment-component>
+          </keep-alive>
+
         </div>
         <div style="height: 40px;width: 100%">
 

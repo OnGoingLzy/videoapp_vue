@@ -27,7 +27,8 @@ Vue.use(VueCoreVideoPlayer)
 //使用公共js函数
 import videojs from "@/assets/commonjs/video";
 Vue.prototype.videojsx = videojs
-
+import des from "@/assets/commonjs/des";
+Vue.prototype.desjs = des
 
 
 new Vue({

@@ -5,13 +5,16 @@
         left-text=""
         right-text=""
     />
-    <router-view></router-view>
+    <KeepAlive>
+      <router-view></router-view>
+    </KeepAlive>
+
   </div>
 </template>
 
 <script>
 export default {
-  name: "adminView",
+  name: "AdminView",
   inject:['setVisible'],
   data(){
     return{

@@ -64,19 +64,13 @@ export default {
       this.$router.push('/register')
     },
     async onSubmit() {
-      if(this.loginForm.email==="admin" && this.loginForm.cpwd==="666"){
-        sessionStorage.setItem("cid","404")
-        sessionStorage.setItem("cname","离线管理员")
-        sessionStorage.setItem("currentPage",'1')
-        this.reload()
-        this.$router.push('/')
-        return
-      }
+
       const {data: res} = await this.$http.post("/login",this.loginForm);  //出现undifine是data写成date
       this.user = res
       if(res !== ""){
         this.$store.commit('upUserData',res)
         sessionStorage.setItem("cid",res.cid)
+        // sessionStorage.setItem("cid",this.desjs.encryptDes(JSON.stringify(res.cid)))
         sessionStorage.setItem("cname",res.cname)
         sessionStorage.setItem("email",res.email)
         sessionStorage.setItem("ctype",res.ctype)

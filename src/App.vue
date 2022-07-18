@@ -12,7 +12,8 @@
 <!--    <button @click="showComponents(true)">显示</button>-->
 <!--    <button @click="showComponents(false)">隐藏</button>-->
 <!--    keepalive会缓存组件而不是销毁 其中key是用来控制刷新的，以免出现退出登录后但还是保持存活 -->
-    <keep-alive include="HomeView" v-if="headerkey === 0">
+<!--    <keep-alive include="HomeView" v-if="headerkey === 0">-->
+    <keep-alive include="HomeView">
     <router-view :key="headerkey+1" @visibleEvent="showComponents" >
     </router-view>
       </keep-alive>
@@ -31,7 +32,6 @@
 <script>
   import header_ from "@/components/header_";
   import login from "@/components/login";
-  import HomeView from "@/views/HomeView";
   import footer_ from "@/components/footer_";
   import '@vant/touch-emulator';//组件只监听了移动端的 touch 事件，没有监听桌面端的 mouse 事件。使用他适配
   import './assets/iconfont/iconfont.css'
@@ -57,7 +57,7 @@
       header_,
       footer_,
       login,
-      HomeView
+      // HomeView
     },
     methods:{
       footerReload(){
