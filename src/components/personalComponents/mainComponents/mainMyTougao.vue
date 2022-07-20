@@ -60,7 +60,7 @@ function closeRunVideo(){
 
 }
 export default {
-  name: "mainMyTougao",
+  name: "MainMyTougao",
   data(){
     return{
       showvideoplay:false,

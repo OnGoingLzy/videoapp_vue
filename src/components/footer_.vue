@@ -89,5 +89,6 @@ export default {
   position: fixed;
   bottom:0;
   background-color: #fcfcfc;
+  z-index: 99;
 }
 </style>

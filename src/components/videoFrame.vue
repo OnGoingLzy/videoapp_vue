@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div style="height: 100%;和overflow: auto;">
     <van-popup v-model="show" position="right" :style="{ height: '100%' ,width: '100%'}" @close="onClickLeft" class="videoFrame" >
       <van-nav-bar
           title=""
@@ -125,9 +125,10 @@
             @select="onSelect"
 
         />
+<!--        收藏弹出层-->
         <van-popup v-model="showShoucang" position="bottom" :style="{ minheight: '15%' }" style="background-color: #F2F3F5" ref="popupbox">
           <div style="width: 100%;background: #fcfcfc;">
-            <van-icon name="plus" size="20px" style="padding: 5px;left: 376px" @click="toAddFolder"/>
+            <van-icon name="plus" size="20px" style="padding: 5px;float: right;right: 11px;z-index: 99" @click="showAddFolder = true"/>
           </div>
 
           <van-radio-group v-model="chooseFolder" >
@@ -144,6 +145,10 @@
           <div style="width: 100%;height: 50px;text-align: center;margin-top: 5px;background-color: #fcfcfc" @click="shoucangVideo">
             <span style="margin: 0;line-height: 50px">完成</span>
           </div>
+        </van-popup>
+<!-- 创建文件夹弹出层-->
+        <van-popup @close="" v-model="showAddFolder" position="bottom" :style="{ minHeight: '30%' }">
+          <main-add-folder></main-add-folder>
         </van-popup>
       </div>
 <!--&lt;!&ndash;      弹出区&ndash;&gt;-->
@@ -176,27 +181,30 @@
 <!--      </van-popup>-->
 
 
-      <div class="pinglun" v-show="!jianjie" style="max-height: 550px;overflow: auto">
-        <div>
-          <div style="display: inline-block;padding: 10px">
-            <span>热门评论</span>
+      <div class="pinglun" v-show="!jianjie" style="max-height: 60%;overflow: auto">
+        <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+          <div>
+            <div style="display: inline-block;padding: 10px">
+              <span>热门评论</span>
+            </div>
+            <div style="display: inline-block;float: right;padding: 10px">
+              <span v-if="sortState==='按热度'" style="color: darkgrey" @click="changeSort('按日期',true)" v-text="sortState"></span>
+              <span v-if="sortState==='按日期'" style="color: darkgrey" @click="changeSort('按热度',true)" v-text="sortState"></span>
+            </div>
           </div>
-          <div style="display: inline-block;float: right;padding: 10px">
-           <span v-if="sortState==='按热度'" style="color: darkgrey" @click="changeSort('按日期')" v-text="sortState"></span>
-            <span v-if="sortState==='按日期'" style="color: darkgrey" @click="changeSort('按热度')" v-text="sortState"></span>
+
+
+          <div v-for="(comment,index) of commentlist" v-show="commentkey" v-if="reloadComment" style="overflow:hidden;box-shadow: 0 1px 1px darkgrey;">
+            <keep-alive>
+              <comment-component v-bind:comment="comment" :key="index"  ></comment-component>
+            </keep-alive>
+
           </div>
-        </div>
+          <div style="height: 40px;width: 100%">
 
+          </div>
+        </van-pull-refresh>
 
-        <div v-for="(comment,index) of commentlist" v-show="commentkey" style="overflow:hidden;box-shadow: 0 1px 1px darkgrey;">
-          <keep-alive>
-            <comment-component v-bind:comment="comment" :key="index"  ></comment-component>
-          </keep-alive>
-
-        </div>
-        <div style="height: 40px;width: 100%">
-
-        </div>
 
 <!--        <div class="input-Comment" v-if="!jianjie">-->
 <!--          <input v-model="sendComment" class="input-Comment-box" type="text" :placeholder="placeholder" >-->
@@ -232,7 +240,9 @@ export default {
   provide(){
     return{
       replyComment: this.replyComment,
-      rootdelComment: this.delComment
+      rootdelComment: this.delComment,
+      returnPopup: this.returnPopup,
+
     }
   },
   components:{
@@ -243,12 +253,14 @@ export default {
 
   data(){
     return {
-      sortState:"按热度",
+      showAddFolder:false,
+      reloadComment: true,
+      sortState:null,
       placeholder:"输入一条友善的评论",
       commentkey:true,
       sendComment:'',
       tocommentid:null,
-      chooseFolder:'',
+      chooseFolder:'1',
       jianjie: true,
       key: 1,
       show: true,
@@ -268,6 +280,7 @@ export default {
         { name: '微信', icon: 'wechat' },
         { name: '复制链接', icon: 'link' },
       ],
+      isLoading: false,
     }
   },
   created() {
@@ -283,6 +296,30 @@ export default {
     // } )
   },
   methods:{
+    returnPopup(){
+      this.showAddFolder = false
+      this.getFolder()
+    },
+    onRefresh() {
+      let formData = new FormData
+      formData.append("videoid",this.video.videoid)
+      this.$http.post("getVideoComment", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      }).then(res=>{
+        this.commentlist = res.data
+        this.changeSort(this.sortState,true)
+        Toast('刷新成功');
+        this.isLoading = false;
+      }).catch((error)=>{
+        Toast("服务器请求失败")
+      })
+      // setTimeout(() => {
+      //   Toast('刷新成功');
+      //   this.isLoading = false;
+      // }, 1000);
+    },
     toVideo(videoid){
       // this.videojsx.globaltoVideo(videoid)
       sessionStorage.setItem("selectVideoId",videoid)
@@ -306,16 +343,11 @@ export default {
         this.commentkey = true
       })
     },
-    changeSort(sortState){
-      this.commentkey = false
-      this.$nextTick(()=>{
-        this.commentkey = true
-      })
+    changeSort(sortState,click){
       if(sortState==='按热度'){
         this.sortState = '按热度'
         this.commentlist = this.commentlist.sort(function (a,b){
           return b.belikecounts - a.belikecounts
-
         })
       }else {
         this.sortState = '按日期'
@@ -324,7 +356,12 @@ export default {
           return new Date(b.date).getTime() - new Date(a.date).getTime()
         })
       }
-
+      if(click===true){
+        this.reloadComment = false
+        this.$nextTick(()=>{
+          this.reloadComment = true
+        })
+      }
     },
     async submitComment() {
       if(sessionStorage.getItem("cid")===null){
@@ -344,11 +381,10 @@ export default {
           this.sendComment=''
           this.tocommentid = null
           this.placeholder = "输入一条友善的评论"
-          this.commentkey = false
+          this.reloadComment = false
           this.$nextTick(()=>{
-            this.commentkey = true
+            this.reloadComment = true
           })
-          this.toComment()
         }
       }).catch((error)=>{
         Toast("服务器开小差了")
@@ -358,6 +394,10 @@ export default {
       Toast("请前往个人中心管理收藏")
     },
     async toComment() {
+      if(this.sortState!==null) {
+        this.jianjie = false
+        return
+      }
       this.jianjie = false
       let formData = new FormData
       formData.append("videoid",this.video.videoid)
@@ -368,7 +408,11 @@ export default {
       }).then(res=>{
         //点赞数排序
         this.commentlist = res.data
-        this.changeSort('按热度')
+        // if(this.sortState==='按热度') return
+        // else this.changeSort('按日期',true)
+        this.changeSort('按热度',true)
+
+
       }).catch((error)=>{
         Toast("服务器请求失败")
       })
@@ -396,10 +440,6 @@ export default {
       }
       this.showShoucang=true
       this.getFolder()
-    },
-    toAddFolder(){
-       this.$router.push('/personalSpace/addFolder')
-     // window.location.href='http://localhost:8080/#/personalSpace/addFolder';
     },
     async checkBeCollected(){
       let formData = new FormData

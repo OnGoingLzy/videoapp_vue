@@ -3,7 +3,8 @@
   <div>
     <personalBackground></personalBackground>
     <personal-message></personal-message>
-    <personalBar :key="barkey"></personalBar>
+    <personalBar :key="barkey" ></personalBar>
+
   </div>
 
 </template>

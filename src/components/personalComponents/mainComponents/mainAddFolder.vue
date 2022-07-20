@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <van-nav-bar
         title="创建"
         left-text=""
@@ -44,7 +43,7 @@ import {Dialog, Toast} from "vant";
 
 export default {
   name: "mainAddFolder",
-  inject:['changeBar','footerReload'],
+  inject:['returnPopup'],
   props:['showBar'],
   data(){
     return{
@@ -54,14 +53,14 @@ export default {
     }
   },
   mounted() {
-    sessionStorage.setItem("personalActive",'2')
-    sessionStorage.setItem("active",'3')
-    this.changeBar(2)
-    this.footerReload()
+    // sessionStorage.setItem("personalActive",'2')
+    // sessionStorage.setItem("active",'3')
+    // this.changeBar(2)
+    // this.footerReload()
   },
   methods:{
     onClickLeft(){
-      this.$router.back()
+      this.returnPopup()
     },
     async onClickRight() {
       if (this.folderName === "") {
@@ -84,8 +83,10 @@ export default {
             title: '创建',
             message: '创建收藏夹成功',
             theme: 'round-button',
+            confirmButtonColor:"#8470ff"
           }).then(() => {
-            this.$router.back()
+            // this.$router.back()
+            this.returnPopup()
           });
 
         }

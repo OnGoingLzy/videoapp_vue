@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont"; /* Project id  */
-  src: url('iconfont.ttf?t=1657086309409') format('truetype');
+  src: url('iconfont.ttf?t=1658295696872') format('truetype');
 }
 
 .iconfont {
@@ -20,8 +20,24 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.van-icon-suoding:before {
+  content: "\f00c9";
+}
+
+.van-icon-jiesuo:before {
+  content: "\f0195";
+}
+
+.van-icon-bianji:before {
+  content: "\f0213";
+}
+
 .van-icon-shenhe:before {
   content: "\e69e";
+}
+
+.van-icon-icmore:before {
+  content: "\e62f";
 }
 
 .van-icon-peizhiguanli:before {
@@ -34,6 +50,10 @@
 
 .van-icon-guanliyuan:before {
   content: "\e62a";
+}
+
+.van-icon-bianji1:before {
+  content: "\eb61";
 }
 
 .van-icon-peizhi:before {
@@ -51,4 +71,5 @@
 .van-icon-guanliyuan1:before {
   content: "\e52d";
 }
+
 

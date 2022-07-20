@@ -75,7 +75,7 @@
 import {Toast} from "vant";
 
 export default {
-  inject:['changeBar','reload'],
+  inject:['changeBar','reload','reloadmsg'],
   name: "mainEditMsg",
   data(){
     return{
@@ -129,7 +129,7 @@ export default {
             sessionStorage.setItem("cbkg",res.bkgName)
             sessionStorage.setItem("cAvatar",res.avatarName)
           })
-          this.reload()
+          this.reloadmsg()
           this.changeBar()
           this.$router.push('zhuye')
         }else {

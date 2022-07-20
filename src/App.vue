@@ -13,7 +13,7 @@
 <!--    <button @click="showComponents(false)">隐藏</button>-->
 <!--    keepalive会缓存组件而不是销毁 其中key是用来控制刷新的，以免出现退出登录后但还是保持存活 -->
 <!--    <keep-alive include="HomeView" v-if="headerkey === 0">-->
-    <keep-alive include="HomeView">
+    <keep-alive :include="keepAlive" max="12">
     <router-view :key="headerkey+1" @visibleEvent="showComponents" >
     </router-view>
       </keep-alive>
@@ -47,6 +47,7 @@
     },
     data() {
       return {
+        keepAlive:['HomeView'],
         headerkey: 0,
         footerkey: 4,
         cvisible: true, //header是否显示

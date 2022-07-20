@@ -1,30 +1,37 @@
 <template>
-  <div class="personalSpace">
-    <keep-alive>
-      <SpaceHeader v-if="key===0"></SpaceHeader>
-    </keep-alive>
+  <div class="PersonalSpace">
+<!--      <SpaceHeader v-if="key===0" ></SpaceHeader>-->
 
-    <keep-alive>
-    <router-view v-if="key2===1"> </router-view>
+      <personalBackground v-if="key3===2"></personalBackground>
+      <personal-message v-if="key3===2"></personal-message>
+      <personalBar v-if="key===0"></personalBar>
+    <keep-alive include="MainMyTougao,MainZhuye">
+    <router-view v-if="key===0"></router-view>
     </keep-alive>
   </div>
 </template>
 
 <script>
 import SpaceHeader from "@/components/personalComponents/SpaceHeader";
+import personalBackground from "@/components/personalComponents/HeaderComponents/personalBackground";
+import personalMessage from "@/components/personalComponents/HeaderComponents/personalMessage";
+import personalBar from "@/components/personalComponents/HeaderComponents/personalBar";
 
 export default {
   inject:['setVisible'],
   name: "PersonalSpace",
   provide(){
     return{
-      changeBar : this.changeBar
+      changeBar : this.changeBar,
+      reloadmsg : this.reloadmsg
     }
   },
   data(){
     return{
       key: 0,
-      key2:1
+      key2:1,
+      key3:2,
+
     }
   } ,
   methods:{
@@ -33,10 +40,19 @@ export default {
       this.$nextTick(function(){
         this.key = 0
       })
+    },
+    reloadmsg(){
+      this.key3 = 3
+      this.$nextTick(function(){
+        this.key3 = 2
+      })
     }
   },
   components:{
     SpaceHeader,
+    personalBackground,
+    personalMessage,
+    personalBar
   },
   mounted() {
     this.setVisible(false)//防止F5刷新时组件被销毁visible变成默认的true导致出现header组件
@@ -55,7 +71,7 @@ export default {
 </script>
 
 <style  scoped>
-  .personalSpace{
+  .PersonalSpace{
     min-height: 800px;
     background-color: #F2F3F5;
   }

@@ -2,7 +2,7 @@
   <div>
     <van-image
         width="100%"
-        height="13rem"
+        height="24%"
         fit="fill"
         :src='"http://localhost:9000/personalBackground/"+bkgImg'
     />

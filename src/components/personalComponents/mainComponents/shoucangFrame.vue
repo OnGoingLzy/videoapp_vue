@@ -8,6 +8,7 @@
         left-arrow
         @click-left="onClickLeft"
     />
+      <div style="padding: 5px">
       <div v-if="folderVideo===null">
         这里面空空如也
       </div>
@@ -33,7 +34,7 @@
           <van-icon name="ellipsis" color="black" @click="clickEditVideo(video.videoid)"/>
         </div>
       </div>
-
+      </div>
       <van-popup @close="editVideoId = null" v-model="editVideo" position="bottom" :style="{ minHeight: '10%' }" style="background-color: #F2F3F5">
         <van-row style="background-color: #fcfcfc">
           <van-col span="6" class="icondiv" @click="cancelShoucang()">
@@ -127,32 +128,33 @@ export default {
 </script>
 
 <style lang="less" scoped>
+
 .videoFrame{
   background: #F2F3F5;
   min-height: 600px;
   width: 414px;
 }
-.shoucang-video-box{
-  height: 80px;
-  padding: 10px;
-  display: flex;
-  .shoucang-video-box-img{
-    width: 120px;
-    height: 80px;
-    display: inline-block;
-  }
-  .shoucang-video-box-msg{
-    padding-left: 7px;
-    width: 56%;
-    height: 80px;
-    display: inline-block;
-  }
-  .shoucang-video-box-edit{
-    display: inline-block;
-    width: 20px;
-
-  }
-}
+//.shoucang-video-box{
+//  height: 80px;
+//  padding: 10px;
+//  display: flex;
+//  .shoucang-video-box-img{
+//    width: 120px;
+//    height: 80px;
+//    display: inline-block;
+//  }
+//  .shoucang-video-box-msg{
+//    padding-left: 7px;
+//    width: 56%;
+//    height: 80px;
+//    display: inline-block;
+//  }
+//  .shoucang-video-box-edit{
+//    display: inline-block;
+//    width: 20px;
+//
+//  }
+//}
 .icondiv{
   padding: 6px;
   display: table-cell;

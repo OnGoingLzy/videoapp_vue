@@ -258,7 +258,7 @@ export default {
 
 <style lang="less" scoped>
   .all-video-box{
-    min-height: 300px;
+    height: 100%;
     ///*垂直居中 */
     //vertical-align: middle;
     /*水平居中*/
@@ -314,7 +314,7 @@ export default {
     }
   }
   .tag-box{
-    padding-left: 10.5px;padding-right: 10.5px;
+    padding-left: 4px;padding-right: 4px;
     height: 50px;
     /*垂直居中 */
     vertical-align: middle;

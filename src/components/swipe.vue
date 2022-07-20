@@ -1,8 +1,15 @@
 <template>
   <div class="swipe">
-    <van-swipe :autoplay="3000" indicator-color="white">
+    <van-swipe :autoplay="3000" indicator-color="#8470ff" >
       <van-swipe-item v-for="(image, index) in images" :key="index" >
-        <img v-lazy="image" />
+<!--        <img v-lazy="image" />-->
+        <van-image
+            width="100%"
+            height="100%"
+            fit="fill"
+            lazy-load
+            :src="image"
+        />
       </van-swipe-item>
     </van-swipe>
 
@@ -42,7 +49,11 @@ export default {
       box-shadow: 0 1px 1px darkgrey;
       border-radius: 5px;
       width: 100%;
-      height: 206px;
+      height: 100%;
     }
+  }
+  .van-swipe-item{
+    margin: 0;
+    height: auto;
   }
 </style>

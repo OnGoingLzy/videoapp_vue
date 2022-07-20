@@ -6,11 +6,39 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "1130",
+      "name": "锁定",
+      "font_class": "suoding",
+      "unicode": "f00c9",
+      "unicode_decimal": 983241
+    },
+    {
+      "icon_id": "1334",
+      "name": "解锁",
+      "font_class": "jiesuo",
+      "unicode": "f0195",
+      "unicode_decimal": 983445
+    },
+    {
+      "icon_id": "201638",
+      "name": "编辑",
+      "font_class": "bianji",
+      "unicode": "f0213",
+      "unicode_decimal": 983571
+    },
+    {
       "icon_id": "421412",
       "name": "审核",
       "font_class": "shenhe",
       "unicode": "e69e",
       "unicode_decimal": 59038
+    },
+    {
+      "icon_id": "659148",
+      "name": "ic_more",
+      "font_class": "icmore",
+      "unicode": "e62f",
+      "unicode_decimal": 58927
     },
     {
       "icon_id": "1305473",
@@ -32,6 +60,13 @@
       "font_class": "guanliyuan",
       "unicode": "e62a",
       "unicode_decimal": 58922
+    },
+    {
+      "icon_id": "3868263",
+      "name": "编辑",
+      "font_class": "bianji1",
+      "unicode": "eb61",
+      "unicode_decimal": 60257
     },
     {
       "icon_id": "7326003",

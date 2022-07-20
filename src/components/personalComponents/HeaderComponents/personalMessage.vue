@@ -49,7 +49,7 @@
 <script>
 
 export default {
-  inject: ['reload','setVisible','reloadBar'],
+  inject: ['reload','setVisible','changeBar'],
   name: "personalMessage",
   data(){
     return{
@@ -68,7 +68,7 @@ export default {
     },
     toEdit(){
       sessionStorage.setItem('personalActive','0')
-      this.reloadBar()
+      this.changeBar()
       this.$router.push('editMsg')
     },
 

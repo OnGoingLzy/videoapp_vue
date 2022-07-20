@@ -50,7 +50,7 @@
 import shoucangFrame from "@/components/personalComponents/mainComponents/shoucangFrame";
 
 export default {
-  name: "mainZhuye",
+  name: "MainZhuye",
   inject:['changeBar'],
   provide(){
     return{
@@ -130,9 +130,9 @@ export default {
     text-align: center;
   }
   .folder-box{
-    width: 180px;
+    width: 46%;
     height: 160px;
-    margin: 7.5px;
+    margin: 0.018%;
     display: inline-block;
 
     .folder-box-span{
